@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      box-sizing: border-box;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-top: 50px;
+    }
+    h2 {
+      text-align: center;
+    }
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+    .error-message {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Registration</h2>
+    <form id="registration-form">
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+      <input type="submit" value="Register">
+    </form>
+    <div id="error-message" class="error-message"></div>
+  </div>
+
+  <!-- Include crypto-js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+
+  <script>
+    function sha256Hash(input) {
+      // Generate the hashed output using SHA-256 algorithm
+      const hashedOutput = CryptoJS.SHA256(input).toString(CryptoJS.enc.Hex);
+
+      return hashedOutput;
+    }
+
+    document.getElementById('registration-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      var username = sha256Hash(document.getElementById('username').value)
+      var password = sha256Hash(document.getElementById('password').value)
+
+      // Hardcoded valid credentials
+      var validCredentials = [
+        { username: '3ca8fb934ce56880cc73061369f4af09a6cce5e455a8e83366a96b0752bc6adc', password: '52c495e12d2e52c12f188bc01e8130c0a5c64d7dcbf581da6dc466af77dcfe38' },
+        { username: '30c183e6d037d54d158f084f1ffe772786c19c3dadd6fb3421536fc852af2d60', password: '52c495e12d2e52c12f188bc01e8130c0a5c64d7dcbf581da6dc466af77dcfe38' }
+      ];
+
+      var validUser = validCredentials.some(function(cred) {
+        return cred.username === username && cred.password === password;
+      });
+
+      if (validUser) {
+        // Redirect to chat page (change URL as needed)
+        window.location.href = 'index.html';
+      } else {
+        document.getElementById('error-message').textContent = 'Invalid username or password.';
+      }
+    });
+  </script>
+  <!-- Include the Firebase initialization JavaScript file -->
+  <script src="firebase-init.js"></script>
+
+</body>
+</html>
